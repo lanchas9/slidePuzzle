@@ -27,8 +27,11 @@ let inicio;
 let finalizado = false;
 let ultimoTile;
 let ultimoBoard;
-let tiempoVerImagenOriginal = 10;
+let tiempoVerImagenOriginal = 2;
 let finalSize
+let margenWidth
+let margenHeight
+// import {tingle} from "/libraries/tingle.js";
 
 // Loading the image
 function preload() {
@@ -37,63 +40,104 @@ function preload() {
 
 function setup() {
     
-    finalSize = window.innerWidth >= window.innerHeight ? window.innerHeight : window.innerWidth
-    let margen = Math.ceil(finalSize * 0.05)
-    finalSize = finalSize-margen
-    createCanvas(finalSize - margen, finalSize - margen);
+  finalSize = window.innerWidth >= window.innerHeight ? window.innerHeight : window.innerWidth
+  margenWidth = (window.innerWidth - finalSize)/2 
+  margenHeight = (window.innerHeight - finalSize)/2
+  if(margenWidth < (finalSize*.05) ){
+    margenWidth = (finalSize*.05)
+  }
+
+  if(margenHeight < (finalSize*.05) ){
+    margenHeight = (finalSize*.05)
+  }
+  let minTam = margenWidth < margenHeight ? margenWidth : margenHeight 
+
+  finalSize = finalSize - minTam*2
+  createCanvas(window.innerWidth , window.innerHeight);
   
-  alert("Te vamos a presentar la imagen original, tienes " + tiempoVerImagenOriginal +" segundos para aprendertela antes de que sea movida de manera aleatoria")
+  let msg = "Te vamos a presentar la imagen original, tienes " + tiempoVerImagenOriginal +" segundos para aprendertela antes de que sea movida de manera aleatoria"
 
-
-
-  image(source,0,0,finalSize - margen, finalSize - margen)
-    
-  setTimeout(() => {    
-      listo = true;
-    }, tiempoVerImagenOriginal*1000);
-
-    setTimeout(() => {
-      inicio = new Date().getTime();
-    }, tiempoVerImagenOriginal*1000-5);
-
+        var modal = new tingle.modal({
+        footer: true,
+        stickyFooter: false,
+        closeMethods: ['overlay', 'button', 'escape'],
+        closeLabel: "Close",
+        cssClass: ['custom-class-1', 'custom-class-2'],
+        onOpen: function() {
+            console.log('modal open');
+        },
+        onClose: function() {
+            image(source,0 + margenWidth,0 + margenHeight,finalSize , finalSize)
+            setTimeout(() => {
+                creaCuadricula()    
+                listo = true;
+              }, tiempoVerImagenOriginal*1000);
+          
+              setTimeout(() => {
+                inicio = new Date().getTime();
+              }, tiempoVerImagenOriginal*1000-5);
+          
+            console.log('modal closed');
+        },
+        beforeClose: function() {
+            // here's goes some logic
+            // e.g. save content before closing the modal
+            return true; // close the modal
+            // return false; // nothing happens
+        }
+        });
+        modal.setContent(`<h2>INSTRUCCIONES</h2><br><br><h3>${msg}</h3>`);
+        
+        // add a button
+        modal.addFooterBtn('Inicia Juego', 'tingle-btn tingle-btn--primary', function() {
+            // here goes some logic
+            
+            modal.close();
+        });
+        // open modal
+        modal.open();
   // add a helper button, when pressed tiles will have be outlined 
   // in white rectangles if the tiles are in the correct position
 //   button = createButton('Help Me');
 //   button.position(10, 450);
 //   button.mousePressed(helper);
+}
 
-  // pixel dimensions of each tiles
-  w = finalSize / cols;
-  h = finalSize / rows;
+function creaCuadricula(){
+  
+    // pixel dimensions of each tiles
+    w = finalSize / cols;
+    h = finalSize / rows;
+    let newOriginal = createImage(finalSize, finalSize); 
+    newOriginal.copy(source,0,0,source.width,source.height,0,0,finalSize, finalSize)
+    // Chop up source image into tiles
+    for (let i = 0; i < cols; i++) {
+      for (let j = 0; j < rows; j++) {
+        let x = i * w;
+        let y = j * h;
+        // let newW = parseInt(w)
+        // let newH= parseInt(h)
 
-  // Chop up source image into tiles
-  for (let i = 0; i < cols; i++) {
-    for (let j = 0; j < rows; j++) {
-      let x = i * w;
-      let y = j * h;
-      let newW = parseInt(w)
-      let newH= parseInt(h)
-
-      let img = createImage(newW, newH);
-      img.copy(source, x, y, w, h, 0, 0, w, h);
-      let index = i + j * cols;
-      board.push(index);
-      let tile = new Tile(index, img);
-      tiles.push(tile);
+        let img = createImage(w, h);
+        img.copy(newOriginal, x, y, w, h, 0, 0, w, h);
+        let index = i + j * cols;
+        board.push(index);
+        let tile = new Tile(index, img);
+        tiles.push(tile);
+      }
     }
-  }
-  //Guarda ultimo
-  ultimoTile = tiles.at(tiles.length-1)
-  ultimoBoard = board.at(board.length-1)
+    //Guarda ultimo
+    ultimoTile = tiles.at(tiles.length-1)
+    ultimoBoard = board.at(board.length-1)
 
-  // Remove the last tile
-  tiles.pop();
-  board.pop();
-  // -1 means empty spot
-  board.push(-1);
+    // Remove the last tile
+    tiles.pop();
+    board.pop();
+    // -1 means empty spot
+    board.push(-1);
 
-  // Shuffle the board
-  simpleShuffle(board);
+    // Shuffle the board
+    simpleShuffle(board);
 }
 
 // Swap two elements of an array
@@ -113,16 +157,24 @@ function randomMove(arr) {
 
 // Shuffle the board
 function simpleShuffle(arr) {
-  for (let i = 0; i < 10000; i++) {
+  for (let i = 0; i < 2; i++) {
     randomMove(arr);
   }
 }
 
 // Move based on click
 function mousePressed() {
-  let i = floor(mouseX / w);
-  let j = floor(mouseY / h);
-  moveTiles(i, j, board);
+  if(listo){
+    let i = floor((mouseX - margenWidth) / w);
+    let j = floor((mouseY - margenHeight) / h);
+    console.log('Coor:' + i + "," + j)
+    if((i>=0) && (j>=0) && (i<cols) && (j<rows)){
+      console.log('valido')
+      moveTiles(i, j, board);
+    }else{
+      console.log('invalido')
+    }
+  }
 }
 
 function draw() {
@@ -139,7 +191,7 @@ if(listo){
       let tileIndex = board[index];
       if (tileIndex > -1) {
         let img = tiles[tileIndex].img;
-        image(img, x, y, w, h);
+        image(img, x + margenWidth, y + margenHeight, w, h);
         for (let a = 0; a < board.length - 1; a++) {
           // if the player wants help, show whether tile is in correct place
           if (help && boardIndex == tileIndex) {
@@ -160,7 +212,7 @@ if(listo){
       strokeWeight(2);
       noFill();
 
-      rect(x, y, w, h);
+      rect(x + margenWidth, y + margenHeight, w, h);
     }
   }
 
@@ -190,9 +242,42 @@ function terminalo(){
 }
 
 function mensaje(){
+    listo=false
     let final  = new Date().getTime();
     let resultado = final - inicio
-    alert('Puzzle solucionado en: ' + (resultado/1000) + ' segundos')
+    let msg = 'Puzzle solucionado en: ' + (resultado/1000) + ' segundos'
+
+    var modal = new tingle.modal({
+      footer: true,
+      stickyFooter: false,
+      closeMethods: ['overlay', 'button', 'escape'],
+      closeLabel: "Close",
+      cssClass: ['custom-class-1', 'custom-class-2'],
+      onOpen: function() {
+          console.log('modal open');
+      },
+      onClose: function() {
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1000);
+      },
+      beforeClose: function() {
+          // here's goes some logic
+          // e.g. save content before closing the modal
+          return true; // close the modal
+          // return false; // nothing happens
+      }
+      });
+      modal.setContent(`<h2>RESULTADO</h2><br><br><h3>${msg}</h3>`);
+      
+      // add a button
+      modal.addFooterBtn('Reinicia Juego', 'tingle-btn tingle-btn--primary', function() {
+          // here goes some logic
+          
+          modal.close();
+      });
+      // open modal
+      modal.open();
 }
 
 // Check if solved
