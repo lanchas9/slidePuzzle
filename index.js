@@ -27,7 +27,7 @@ let inicio;
 let finalizado = false;
 let ultimoTile;
 let ultimoBoard;
-let tiempoVerImagenOriginal = 2;
+let tiempoVerImagenOriginal = 10;
 let finalSize
 let margenWidth
 let margenHeight
@@ -158,7 +158,7 @@ function randomMove(arr) {
 
 // Shuffle the board
 function simpleShuffle(arr) {
-  for (let i = 0; i < 2; i++) {
+  for (let i = 0; i < 1000; i++) {
     randomMove(arr);
   }
 }
@@ -260,7 +260,7 @@ function mensaje(){
       onClose: function() {
           setTimeout(() => {
             window.location.href = "index.html";
-          }, 1000);
+          }, 5000);
       },
       beforeClose: function() {
           // here's goes some logic
