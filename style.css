@@ -6,8 +6,80 @@ canvas{
 
 body{
     background-color: black;
+    overflow: hidden; /* Hide scrollbars */
+    border: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
-body {
-    overflow: hidden; /* Hide scrollbars */
-  }
+.margen {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: bisque;
+    border-radius: 10px;
+    margin-top: 5%;
+}
+
+.margenBlanco {
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 5%;
+    text-align: center;
+}
+
+.titulo{
+    text-align: center;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 32px;
+    padding-top: 5%;
+}
+
+.tituloChico{
+    text-align: center;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 24px;
+    padding-top: 5%;
+}
+
+.tabla {
+    margin-left: 5%;
+    margin-right: 5%;
+    background-color: white;
+    border-radius: 10px;
+    margin-top: 5%;
+}
+
+.col {
+    width: 40%;
+}
+
+.imagen{
+    width: 200px;
+}
+.abajo{
+    width: 100%;
+    background-color: red;
+}
+
+
+.centrado{
+    text-align: center;
+}
+
+.invisible{
+    display: none;
+}
+
+.visible{
+    display: block;
+}
+
+.logoGrande{
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+}

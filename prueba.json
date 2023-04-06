@@ -1,0 +1,19 @@
+{
+    "MediaContentType0": "image/jpeg",
+    "SmsMessageSid": "MM2c9ef9ee3e24491830896b4bfbfaf728",
+    "NumMedia": "1",
+    "ProfileName": "Emilio San Miguel",
+    "SmsSid": "MM2c9ef9ee3e24491830896b4bfbfaf728",
+    "WaId": "5217775640845",
+    "SmsStatus": "received",
+    "Body": "Aquí mi fotografía para el juego SLIDER PUZZLE",
+    "To": "whatsapp:+12134938066",
+    "MessagingServiceSid": "MG2e7ef6b74c15edb63f20c60fe3b80b2a",
+    "NumSegments": "1",
+    "ReferralNumMedia": "0",
+    "MessageSid": "MM2c9ef9ee3e24491830896b4bfbfaf728",
+    "AccountSid": "AC0e8074b23e4f9a05d763165c946d3845",
+    "From": "whatsapp:+5217775640845",
+    "MediaUrl0": "https://api.twilio.com/2010-04-01/Accounts/AC0e8074b23e4f9a05d763165c946d3845/Messages/MM2c9ef9ee3e24491830896b4bfbfaf728/Media/MEd0b5db14a016565954682f3735d68a7e",
+    "ApiVersion": "2010-04-01"
+}

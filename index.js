@@ -35,7 +35,8 @@ let margenHeight
 
 // Loading the image
 function preload() {
-  source = loadImage('checo2.jpg');
+ let imgUrlFinal = document.getElementById("imgUrlFinal").href
+  source = loadImage(imgUrlFinal);
 }
 
 function setup() {

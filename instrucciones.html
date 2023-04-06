@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slide Puzzle</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="libraries/tingle.css">
+    <link rel="stylesheet" href="boton.css">
+    <script src="libraries/tingle.js"></script>
+</head>
+<body onload="monitoreo()">
+    <div class="margen">
+        <p class="titulo">Juego SLIDER PUZZLE<p>
+        <table class="tabla">
+            <tr class="ancho">
+                <th class="col">
+                    <p class="tituloChico">
+                        Lee este Código QR, para conectarte a nuestro WhatsApp y enviarnos tu fotografía en formato cuadrado por favor
+                    </p>
+                </th>
+                <th class="col">
+                    <p class="tituloChico">
+                        Imagen de WhatsApp recibida
+                    </p>
+                </th>
+            </tr>
+            <tr>
+                <th class="col">
+                    <img src="qr.png" alt="" srcset="" class="imagen">
+                </td>
+                <th class="col">
+                    <img src="loading-gif.gif" alt="" srcset="" class="imagen" id="imagenWhatsApp">
+                </td>
+            </tr>
+        </table>
+        <br>
+        <div class="centrado invisible" id="abajo">
+            <button class="btn" id="boton" onclick="avanza()">Continuar</button>
+        </div>
+        <br><br>
+    </div>
+    
+
+    <script>
+        let hora;
+        let imgUrlFinal
+        function avanza(){
+            window.location.href = 'juego.html?imgUrlFinal=' + imgUrlFinal
+        }
+
+        async function monitoreo(){
+            try {
+                let api = await fetch('https://mosaico.app:4000/whastbooth/dameHora')
+                let resul = await api.json()
+                if (resul.statusCode == 200){
+                    hora = resul.message
+                    console.log({hora})
+                }
+            }catch(e){
+                console.log(e)   
+            }
+
+            setTimeout(() => {
+                console.log("1era vez, vamos por foto")
+                vamosPorFoto()
+            }, 5000);
+        }
+
+        async function vamosPorFoto(){
+
+                const data = {
+                    "createdAT" : hora
+                }
+                const dataJson = JSON.stringify(data)
+
+                const settings = {
+                    method: 'POST',
+                    headers: {
+                        Accept: 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: 
+                        dataJson
+                 };
+                try {
+                    let api = await fetch('https://mosaico.app:4000/whastbooth/dameFotoNueva',settings)
+                    let resul = await api.json()
+                    if (resul.statusCode == 200){
+                        console.log("SI hay foto")
+                        let img = resul.message[0].imgUrl
+                        document.getElementById('imagenWhatsApp').src = img
+                        document.getElementById('abajo').className = 'centrado visible'
+                        imgUrlFinal = encodeURIComponent(img)
+
+                    }else{
+                        console.log("NO hay foto, esperamos 5 seg")
+                        setTimeout(() => {
+                            console.log("De nuevo, vamos por foto")
+                            vamosPorFoto()
+                        }, 5000);
+                    }
+                }catch(e){
+                    console.log("Error en Fetch a Mosaico.app, esperamos 5 seg")
+                    setTimeout(() => {
+                        console.log("De nuevo, vamos por foto")
+                        vamosPorFoto()
+                    }, 5000);
+                }
+        }
+
+        function mensaje(){
+            let tiempoVerImagenOriginal = 6;
+        let msg = "Te vamos a presentar la imagen original, tienes " + tiempoVerImagenOriginal +" segundos para aprendertela antes de que sea movida de manera aleatoria"
+
+        var modal = new tingle.modal({
+        footer: true,
+        stickyFooter: false,
+        closeMethods: ['overlay', 'button', 'escape'],
+        closeLabel: "Close",
+        cssClass: ['custom-class-1', 'custom-class-2'],
+        onOpen: function() {
+            console.log('modal open');
+        },
+        onClose: function() {
+            console.log('modal closed');
+        },
+        beforeClose: function() {
+            // here's goes some logic
+            // e.g. save content before closing the modal
+            return true; // close the modal
+            // return false; // nothing happens
+        }
+        });
+        modal.setContent(`<h2>INSTRUCCIONES</h2><br><br><h3>${msg}</h3>`);
+        
+        // add a button
+        modal.addFooterBtn('Inicia Juego', 'tingle-btn tingle-btn--primary', function() {
+            // here goes some logic
+            modal.close();
+        });
+        // open modal
+        modal.open();
+
+        }
+    </script>
+</body>
+</html>
