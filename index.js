@@ -55,12 +55,12 @@ function setup() {
 
   finalSize = finalSize - minTam*2
   createCanvas(window.innerWidth , window.innerHeight);
-  
-  let msg = "Te vamos a presentar la imagen original, tienes " + tiempoVerImagenOriginal +" segundos para aprendertela antes de que sea movida de manera aleatoria"
+  let msg = '<img src="img/04_PopUp.jpg" alt="" srcset="" style="width: 625px;">'
+  // let msg = "Te vamos a presentar la imagen original, tienes " + tiempoVerImagenOriginal +" segundos para aprendertela antes de que sea movida de manera aleatoria"
 
         var modal = new tingle.modal({
-        footer: true,
-        stickyFooter: false,
+        footer: false,
+        stickyFooter: true,
         closeMethods: ['overlay', 'button', 'escape'],
         closeLabel: "Close",
         cssClass: ['custom-class-1', 'custom-class-2'],
@@ -87,14 +87,17 @@ function setup() {
             // return false; // nothing happens
         }
         });
-        modal.setContent(`<h2>INSTRUCCIONES</h2><br><br><h3>${msg}</h3>`);
+        // modal.setContent(`<h2>INSTRUCCIONES</h2><br><br><h3>${msg}</h3>`);
+
+        modal.setContent(`${msg}`);
         
         // add a button
-        modal.addFooterBtn('Inicia Juego', 'tingle-btn tingle-btn--primary', function() {
-            // here goes some logic
+        // modal.addFooterBtn('Inicia Juego', 'tingle-btn tingle-btn--primary', function() {
+        // modal.addFooterBtn('', '', function() {
+        //     // here goes some logic
             
-            modal.close();
-        });
+        //     modal.close();
+        // });
         // open modal
         modal.open();
   // add a helper button, when pressed tiles will have be outlined 
@@ -249,7 +252,7 @@ function mensaje(){
     let msg = 'Puzzle solucionado en: ' + (resultado/1000) + ' segundos'
 
     var modal = new tingle.modal({
-      footer: true,
+      footer: false,
       stickyFooter: false,
       closeMethods: ['overlay', 'button', 'escape'],
       closeLabel: "Close",
@@ -269,14 +272,18 @@ function mensaje(){
           // return false; // nothing happens
       }
       });
-      modal.setContent(`<h2>RESULTADO</h2><br><br><h3>${msg}</h3>`);
+      //
+      modal.setContent(`<div class="letreroFinal">
+      <br><br><br><br><br><br><br><br><br>
+      <div class="letreroBlanco">${msg}</div>
+  </div>`);
       
-      // add a button
-      modal.addFooterBtn('Reinicia Juego', 'tingle-btn tingle-btn--primary', function() {
-          // here goes some logic
+      // // add a button
+      // modal.addFooterBtn('Reinicia Juego', 'tingle-btn tingle-btn--primary', function() {
+      //     // here goes some logic
           
-          modal.close();
-      });
+      //     modal.close();
+      // });
       // open modal
       modal.open();
 }

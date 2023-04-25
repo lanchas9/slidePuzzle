@@ -8,7 +8,14 @@
             "type": "chrome",
             "request": "launch",
             "name": "LiveServer",
-            "url": "http://127.0.0.1:5500/juego.html?imgUrlFinal=https%3A%2F%2Fs3-external-1.amazonaws.com%2Fmedia.twiliocdn.com%2FAC0e8074b23e4f9a05d763165c946d3845%2F6630947b8a339f83b646ab0bd20c08b5",
+            "url": "http://127.0.0.1:5500/index.html",
+            "webRoot": "${workspaceFolder}/"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Directo Juego",
+            "url": "http://127.0.0.1:5500/juego.html?imgUrlFinal=https%3A%2F%2Fplay-lh.googleusercontent.com%2FIeNJWoKYx1waOhfWF6TiuSiWBLfqLb18lmZYXSgsH1fvb8v1IYiZr5aYWe0Gxu-pVZX3",
             "webRoot": "${workspaceFolder}/"
         }
     ]

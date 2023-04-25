@@ -5,12 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slide Puzzle</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/styleV.css">
     <link rel="stylesheet" href="libraries/tingle.css">
     <link rel="stylesheet" href="boton.css">
     <script src="libraries/tingle.js"></script>
 </head>
-<body onload="monitoreo()">
+<!-- <body onload="monitoreo()">
     <div class="margen">
         <p class="titulo">Juego SLIDER PUZZLE<p>
         <table class="tabla">
@@ -40,9 +40,11 @@
             <button class="btn" id="boton" onclick="avanza()">Continuar</button>
         </div>
         <br><br>
-    </div>
-    
-
+    </div> -->
+<body onload="monitoreo()">
+    <img src="img/02_Whatsapp.jpg" alt="" srcset="" class="logoGrande">
+    <img src="loading-gif.gif" alt="" srcset="" class="flotando" id="imagenWhatsApp">
+    <img src="img/03_BotonContinuar.png" alt="" class="flotando2" id="boton" onclick="avanza()">
     <script>
         let hora;
         let imgUrlFinal
@@ -91,7 +93,7 @@
                         console.log("SI hay foto")
                         let img = resul.message[0].imgUrl
                         document.getElementById('imagenWhatsApp').src = img
-                        document.getElementById('abajo').className = 'centrado visible'
+                        document.getElementById('boton').className = 'flotando3'
                         imgUrlFinal = encodeURIComponent(img)
 
                     }else{
